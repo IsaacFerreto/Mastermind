@@ -13,8 +13,7 @@ class Game_Control:
     
     def __machine_answer(self):#method created, to create a new list
         while len(self.__correct)<4:#this is going to make the list to be 4
-            one_color=random.choice(self.__colors)#choose a random color from the list
-            self.__correct.append(one_color)#add the color to the list
+            self.__correct.append(random.choice(self.__colors))#add the color to the list
         print(self.__correct)
         
     def __player_answer(self):
