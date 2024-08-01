@@ -12,12 +12,9 @@ class Game_Control:
         
     
     def __machine_answer(self):#method created, to create a new list
-        
-        
         while len(self.__correct)<4:#this is going to make the list to be 4
             one_color=random.choice(self.__colors)#choose a random color from the list
             self.__correct.append(one_color)#add the color to the list
-        
         print(self.__correct)
         
     def __player_answer(self):
@@ -40,7 +37,6 @@ class Game_Control:
                 return self.__player_answer()
             else:
                 self.__machine_answer()
-                
         else: 
             print("Please press  'y' or 'f': ")
             return self.__player_or_machine()
@@ -93,64 +89,49 @@ class Board:
         self.__almost=f'{Fore.yellow}☻ {Style.reset}'#smile for when it is on the array but not in the exact position
         self.__wrong='☻ '#smile for where it isn't on the combination
         self.deffault=[self.__wrong, self.__wrong, self.__wrong, self.__wrong]#a default where everything is going to be gray until player tries
-        #the idea is to always print the 12 rows
-        pass    
+        self.rows = [self.deffault[:] for _ in range(12)]  # Initialize 12 rows with the default pattern
+            
     
-    def __creating(self,results,tries=0):  
+    def __creating(self,results,tries):  
         rows=[]#empty array to create a matrix with the guesses
         temp_array=[]
-        for i in results:
+        for i in results:#this cycle use results to add them to a temporary arraay to push 
             print(i)
             if i =="exact":
-                i=self.__perfect
-                temp_array.append(i)
-                print(i)
-            elif i=="close":
-                i=self.__almost
-                temp_array.append(i)
+                temp_array.append(self.__perfect)
                 
-                print(i)
-            else:
-                i=self.__wrong
-                temp_array.append(i)
-                        
-                print(i)
-        if tries<1:
-            for i  in range (0,12):
-                rows.append(self.deffault)
-        
-        print(tries) 
-        print(temp_array)
-        print(results)   
-        rows[tries]=temp_array
+            elif i=="close":
+                temp_array.append(self.__almost)
 
-        #here i want to make an for/if that when the attempts increase it is going to sent the color combination
-        #and changin the default one  for the combination
-            
-        for i in range(0,12):
-            print(*rows[i])   #to print row by row of guesses
+            else:
+                temp_array.append(self.__wrong)
+
+        self.rows[tries] = temp_array  # Update the corresponding row with the current results
+
+        for row in self.rows:
+            print(*row)
         
-        
-        
-        
-    
-    
-    
-    
+
     
                         
 if __name__ == "__main__":
     game = Game_Control()
     player_combination = game._Game_Control__player_or_machine()
     correct_sequence = game.get_correct()
-    guesser = Guesser()
-    tries= guesser.get_attempts()
-    guess = guesser._Guesser__attempt()
-
-    results = guesser._Guesser__analizing_answer(correct_sequence, player_combination)
     
+    guesser = Guesser()
     board = Board()
-    board._Board__creating(results,tries)
+    
+    while guesser.get_attempts() < 12:
+        guess = guesser._Guesser__attempt()
+        results = guesser._Guesser__analizing_answer(correct_sequence, player_combination)
+        board._Board__creating(results, guesser.get_attempts() - 1)  # Use `get_attempts() - 1` because lists are zero-indexed
+
+        if results == ["exact"] * 4:
+            print("Congratulations! You've guessed the correct combination.")
+            break
+    else:
+        print("Sorry, you've reached the maximum number of attempts.")
     
          
                 
