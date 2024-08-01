@@ -14,7 +14,7 @@ class Game_Control:
     def __machine_answer(self):#method created, to create a new list
         while len(self.__correct)<4:#this is going to make the list to be 4
             self.__correct.append(random.choice(self.__colors))#add the color to the list
-        print(self.__correct)
+        
         
     def __player_answer(self):
         combination=input("Add combination with no commas ',', or spaces between letters the  colors are 'r' for red, 'b' for blue, 'y' for yellow and 'g' for green: " )
@@ -70,7 +70,7 @@ class Guesser:
                 result.append('close')
             else:
                 result.append('wrong')
-        print(result)  # You could use the `Board` class to display these results
+        
         return result
         pass
         
@@ -92,10 +92,10 @@ class Board:
             
     
     def __creating(self,results,tries):  
-        rows=[]#empty array to create a matrix with the guesses
+        
         temp_array=[]
         for i in results:#this cycle use results to add them to a temporary arraay to push 
-            print(i)
+            
             if i =="exact":
                 temp_array.append(self.__perfect)
                 
